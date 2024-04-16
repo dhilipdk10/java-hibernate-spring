@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Notification Template Function
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+
+Resources:
+  NotificationTemplateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: notification-device
+      Handler: com.web3.notification.AdminApplication::handleRequest
+      Runtime: java11
+      Timeout: 60
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          DB_URL: jdbc:mysql://notification-dev.cetru8tejqxw.ap-south-1.rds.amazonaws.com:3306/notification_java
+          DB_HBM2DDL_AUTO: update
+          DB_USERNAME: admin
+          DB_PASSWORD: rp3kaAcOX7PlJ4eeNW3O
+          HIKARI_CONNECTION_TIMEOUT: 20000
+          HIKARI_MINIMUM_IDLE: 1
+          HIKARI_MAXIMUM_POOL_SIZE: 2
+          HIKARI_IDLE_TIMEOUT: 30000
+      Events:
+        GetAllTemplate:
+          Type: Api
+          Properties:
+            Path: /template
+            Method: get
+        SaveTemplate:
+          Type: Api
+          Properties:
+            Path: /template
+            Method: post
+        GetAllCategory:
+            Type: Api
+            Properties:
+              Path: /category
+              Method: get
+        SaveCategory:
+            Type: Api
+            Properties:
+              Path: /category
+              Method: post
+        UpdateCategory:
+            Type: Api
+            Properties:
+              Path: /category/{id}
+              Method: put
+        GetCategoryById:
+            Type: Api
+            Properties:
+              Path: /category/{id}
+              Method: get
+        DeleteCategoryById:
+            Type: Api
+            Properties:
+              Path: /category/{id}
+              Method: delete
+
+            
